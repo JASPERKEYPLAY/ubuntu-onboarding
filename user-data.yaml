@@ -33,7 +33,9 @@ autoinstall:
     - curtin in-target -- convert /usr/share/backgrounds/jk_wallpaper_base.jpg /usr/share/backgrounds/jk_logo.png -gravity southeast -geometry +40+40 -composite /usr/share/backgrounds/jk_wallpaper_final.jpg
     - curtin in-target -- gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/jk_wallpaper_final.jpg'
     - curtin in-target -- gsettings set org.gnome.desktop.screensaver picture-uri 'file:///usr/share/backgrounds/jk_wallpaper_final.jpg'
-
+    - curtin in-target -- wget -O /opt/jk-postinstall.sh https://raw.githubusercontent.com/JASPERKEYPLAY/ubuntu-onboarding/main/jk-postinstall.sh
+    - curtin in-target -- chmod +x /opt/jk-postinstall.sh
+    - curtin in-target -- bash /opt/jk-postinstall.sh
     # Boot splash (Plymouth theme)
     - curtin in-target -- wget -O /usr/share/plymouth/themes/ubuntu-logo/boot-splash.jpg https://kuberasoft.com/lavaxcode-linux/boot-splash.jpg
     # (Further Plymouth theme config can be scripted if needed)
