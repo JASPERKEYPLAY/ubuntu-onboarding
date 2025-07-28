@@ -1,0 +1,42 @@
+autoinstall:
+  version: 1
+  identity:
+    # hostname: (prompt at install)
+    # username: (prompt at install)
+    # password: (prompt at install)
+  storage:
+    layout:
+      name: lvm
+
+  snaps:
+    - name: code
+      classic: true
+    - name: android-studio
+      classic: true
+    - name: spotify
+      classic: false
+    - name: whatsapp-for-linux
+      classic: false
+
+  packages:
+    - zsh
+    - filezilla
+    - python3
+    - p7zip-full
+    - unrar
+    - imagemagick
+
+  late-commands:
+    # Wallpaper and watermark
+    - curtin in-target -- wget -O /usr/share/backgrounds/jk_wallpaper_base.jpg https://kuberasoft.com/lavaxcode-linux/screen.jpg
+    - curtin in-target -- wget -O /usr/share/backgrounds/jk_logo.png https://kuberasoft.com/lavaxcode-linux/logo.png
+    - curtin in-target -- convert /usr/share/backgrounds/jk_wallpaper_base.jpg /usr/share/backgrounds/jk_logo.png -gravity southeast -geometry +40+40 -composite /usr/share/backgrounds/jk_wallpaper_final.jpg
+    - curtin in-target -- gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/jk_wallpaper_final.jpg'
+    - curtin in-target -- gsettings set org.gnome.desktop.screensaver picture-uri 'file:///usr/share/backgrounds/jk_wallpaper_final.jpg'
+
+    # Boot splash (Plymouth theme)
+    - curtin in-target -- wget -O /usr/share/plymouth/themes/ubuntu-logo/boot-splash.jpg https://kuberasoft.com/lavaxcode-linux/boot-splash.jpg
+    # (Further Plymouth theme config can be scripted if needed)
+
+    # Run the main post-install script
+    - curtin in-target -- bash /opt/jk-postinstall.sh
