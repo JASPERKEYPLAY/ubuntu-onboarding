@@ -1,12 +1,14 @@
 #!/bin/bash
 set -e
 
+TMPDIR="/var/tmp"
+
 function install_deb() {
     url="$1"
     filename=$(basename "$url")
-    wget -O "/tmp/$filename" "$url"
-    sudo dpkg -i "/tmp/$filename" || sudo apt-get install -f -y
-    rm "/tmp/$filename"
+    wget -O "$TMPDIR/$filename" "$url"
+    sudo dpkg -i "$TMPDIR/$filename" || sudo apt-get install -f -y
+    rm "$TMPDIR/$filename"
 }
 
 sudo apt-get update
@@ -22,8 +24,8 @@ sudo apt update
 sudo apt install -y brave-browser
 
 # Firefox Developer Edition
-wget -O /tmp/firefox-dev.tar.bz2 "https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64"
-sudo tar -xjf /tmp/firefox-dev.tar.bz2 -C /opt/
+wget -O "$TMPDIR/firefox-dev.tar.bz2" "https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64"
+sudo tar -xjf "$TMPDIR/firefox-dev.tar.bz2" -C /opt/
 sudo ln -sf /opt/firefox/firefox /usr/bin/firefox-developer-edition
 cat <<EOF | sudo tee /usr/share/applications/firefox-developer-edition.desktop
 [Desktop Entry]
@@ -49,9 +51,9 @@ install_deb "https://mega.nz/linux/repo/xUbuntu_24.04/amd64/megasync-xUbuntu_24.
 # Optional: install_deb "https://mega.nz/linux/MEGAcmd/xUbuntu_24.04/amd64/megacmd-xUbuntu_24.04_amd64.deb"
 
 ### -- XAMPP --
-wget -O /tmp/xampp-installer.run "https://sourceforge.net/projects/xampp/files/XAMPP%20Linux/8.2.12/xampp-linux-x64-8.2.12-0-installer.run/download"
-chmod +x /tmp/xampp-installer.run
-sudo /tmp/xampp-installer.run --mode unattended
+wget -O "$TMPDIR/xampp-installer.run" "https://sourceforge.net/projects/xampp/files/XAMPP%20Linux/8.2.12/xampp-linux-x64-8.2.12-0-installer.run/download"
+chmod +x "$TMPDIR/xampp-installer.run"
+sudo "$TMPDIR/xampp-installer.run" --mode unattended
 
 ### -- NODE.JS + NVM --
 export NVM_DIR="$HOME/.nvm"
